@@ -2,7 +2,7 @@ package server.games;
 
 import java.awt.Point;
 
-import command.GameState;
+import server.GameState;
 import server.ServerThread;
 
 public class Game
