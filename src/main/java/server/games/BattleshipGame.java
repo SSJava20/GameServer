@@ -31,7 +31,7 @@ public class BattleshipGame extends Game
     }
 
     @Override
-    public void Move(ServerThread sender, Point coords)
+    public void Move(ServerThread sender, Point from, Point to)
     {
         //To change body of implemented methods use File | Settings | File Templates.
     }

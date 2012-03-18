@@ -13,7 +13,7 @@ public abstract class Game
 
     protected abstract void CheckForWin(Point moveCord);
     protected abstract void start();
-    public abstract void Move(ServerThread sender, Point coords);
+    public abstract void Move(ServerThread sender, Point from, Point to);
 
     public GameState getState()
     {

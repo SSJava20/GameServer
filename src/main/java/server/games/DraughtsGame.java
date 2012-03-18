@@ -1,5 +1,6 @@
 package server.games;
 
+import server.GameState;
 import server.ServerThread;
 
 import java.awt.*;
@@ -27,11 +28,26 @@ public class DraughtsGame extends Game
     @Override
     protected void start()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        State = new GameState(8,8);
+        char cp;
+        if(((int) Math.random()*2) == 1)
+        {
+            cp = 'x';
+            firstPlayer.setMark(cp);
+            secondPlayer.setMark('0');
+        }
+        else
+        {
+            cp = '0';
+            firstPlayer.setMark(cp);
+            secondPlayer.setMark('x');
+        }
+
+        State.setCurrentPlayer(cp);
     }
 
     @Override
-    public void Move(ServerThread sender, Point coords)
+    public void Move(ServerThread sender, Point from, Point to)
     {
         //To change body of implemented methods use File | Settings | File Templates.
     }

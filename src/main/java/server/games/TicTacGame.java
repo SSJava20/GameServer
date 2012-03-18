@@ -150,14 +150,14 @@ public class TicTacGame extends Game
         State.setCurrentPlayer(cp);
     }
 
-    public void Move(ServerThread sender, Point coords)
+    public void Move(ServerThread sender, Point from, Point to)
     {
-        if(State.Board[coords.x][coords.y] == ' ' && State.getWhoWon() == ' ')
+        if(State.Board[to.x][to.y] == ' ' && State.getWhoWon() == ' ')
             if(sender.getMark() == State.getCurrentPlayer())
             {
-                State.Board[coords.x][coords.y] = sender.getMark();
+                State.Board[to.x][to.y] = sender.getMark();
                 MovesCount++;
-                CheckForWin(coords);
+                CheckForWin(to);
                 State.setCurrentPlayer(reverseChar(State.getCurrentPlayer()));
             }
 
