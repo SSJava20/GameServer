@@ -3,7 +3,9 @@ package server.games;
 import server.GameState;
 import server.ServerThread;
 
+import javax.management.BadAttributeValueExpException;
 import java.awt.*;
+import java.util.zip.DataFormatException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,15 +16,24 @@ import java.awt.*;
  */
 public class DraughtsGame extends Game
 {
+    
+    int blackKilled;
+    int whiteKilled;
+    
     public DraughtsGame(ServerThread firstPlayer, ServerThread secondPlayer)
     {
         super(firstPlayer, secondPlayer);
+        blackKilled = 0;
+        whiteKilled = 0;
     }
 
     @Override
     protected void CheckForWin(Point moveCord)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(blackKilled == 12)
+            State.setWhoWon('b');
+        else if(whiteKilled == 12)
+            State.setWhoWon('w');
     }
 
     @Override
@@ -32,16 +43,30 @@ public class DraughtsGame extends Game
         char cp;
         if(((int) Math.random()*2) == 1)
         {
-            cp = 'x';
+            cp = 'b';
             firstPlayer.setMark(cp);
-            secondPlayer.setMark('0');
+            secondPlayer.setMark('w');
         }
         else
         {
-            cp = '0';
+            cp = 'w';
             firstPlayer.setMark(cp);
-            secondPlayer.setMark('x');
+            secondPlayer.setMark('b');
         }
+
+        for(int i = 0; i < State.getColumns(); i++)
+            for(int j = 0; j < State.getRows()/2 - 1; j++)
+            {
+                if((j%2 == 0 && i%2 == 0) || (j%2 == 1 && i%2 == 1))
+                    State.getBoard()[i][j] = firstPlayer.getMark();
+            }
+
+        for(int i = 0; i < State.getColumns(); i++)
+            for(int j = State.getRows()/2 + 2; j < State.getRows(); j++)
+            {
+                if((j%2 == 0 && i%2 == 0) || (j%2 == 1 && i%2 == 1))
+                    State.getBoard()[i][j] = firstPlayer.getMark();
+            }
 
         State.setCurrentPlayer(cp);
     }
@@ -49,6 +74,26 @@ public class DraughtsGame extends Game
     @Override
     public void Move(ServerThread sender, Point from, Point to)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try
+        {
+            if(from.x < 0 || from.x > State.getRows() || to.x < 0 || to.x > State.getRows()) 
+                throw new BadAttributeValueExpException("Pechalka;(");
+            
+            
+            
+        } catch (BadAttributeValueExpException e)
+        {
+            SendStates();
+        }
+
+        if(State.Board[to.x][to.y] == ' ' && State.getWhoWon() == ' ' && !(from.x < 0 || from.x > State.getRows() || to.x < 0 || to.x > State.getRows()))
+            if(sender.getMark() == State.getCurrentPlayer())
+            {
+                State.Board[to.x][to.y] = sender.getMark();
+                CheckForWin(to);
+                State.setCurrentPlayer((State.getCurrentPlayer() == 'b')? 'w':'b');
+            }
+
+        SendStates();
     }
 }
