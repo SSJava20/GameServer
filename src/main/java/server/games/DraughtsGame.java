@@ -99,8 +99,18 @@ public class DraughtsGame extends Game
 
         if(canMove(sender, from, to))
         {
+            State.Board[from.x][from.y] = ' ';
             State.Board[to.x][to.y] = sender.getMark();
-            CheckForWin(to);
+            if(Math.abs(to.x - from.x) == 2)
+            {
+                if(State.Board[(from.x + to.x)/2][(from.y + to.y)/2] == 'w')
+                    whiteKilled++;
+                else
+                    blackKilled++;
+
+                State.Board[(from.x + to.x)/2][(from.y + to.y)/2] = ' ';
+            }
+
             State.setCurrentPlayer(reverseChar(State.getCurrentPlayer()));
         }
 
@@ -117,6 +127,7 @@ public class DraughtsGame extends Game
         ((Math.abs(to.x - from.x) == 1 && Math.abs(to.y - from.y) == 1
         || (Math.abs(to.x - from.x) == 2 && Math.abs(to.y - from.y) == 2 && State.Board[(from.x + to.x)/2][(from.y + to.y)/2] == reverseChar(sender.getMark())) )))
         {
+            // добавить условие на обязательный бой (facepalm)
             result = true;
         }
 
