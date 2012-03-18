@@ -2,8 +2,8 @@ package server;
 
 public class GameState
 {
-    public static final int Rows = 3;
-    public static final int Columns = 3;
+    protected int Rows;
+    protected int Columns;
 
     public char CurrentPlayer;
     public char WhoWon;
@@ -19,8 +19,31 @@ public class GameState
         Board = board;
     }
 
-    public GameState()
+    public int getRows()
     {
+        return Rows;
+    }
+
+    public void setRows(int rows)
+    {
+        Rows = rows;
+    }
+
+    public int getColumns()
+    {
+        return Columns;
+    }
+
+    public void setColumns(int columns)
+    {
+        Columns = columns;
+    }
+
+    public GameState(int row, int column)
+    {
+        Rows = row;
+        Columns = column;
+
         Board = new char[Rows][Columns];
         StartInit();
     }
