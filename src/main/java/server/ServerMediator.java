@@ -12,6 +12,5 @@ public class ServerMediator {
 	public ArrayList<ServerThread> getServerThreads() {
 		return serverThreads;
 	}
-	
-	
+
 }

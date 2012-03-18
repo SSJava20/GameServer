@@ -29,7 +29,7 @@ public class MainServer {
 			while (true) {
 				Socket nSocket = mServerSocket.accept();
 				System.out.println(Messages.getString("MainServer.2")); //$NON-NLS-1$
-				// serverThreads.add(new ServerThread(this, nSocket));
+				mediator.getServerThreads().add(new ServerThread(mediator));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
