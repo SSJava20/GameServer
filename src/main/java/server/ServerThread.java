@@ -59,6 +59,10 @@ public class ServerThread implements Runnable {
 		}
 		Thread.currentThread().interrupt();
 	}
+	
+	public void sendCommand() {
+		
+	}
 
 	public void sendGameState(GameState toSend) {
 
