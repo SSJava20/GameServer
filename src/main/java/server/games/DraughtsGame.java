@@ -16,10 +16,10 @@ import java.util.zip.DataFormatException;
  */
 public class DraughtsGame extends Game
 {
-    
+
     int blackKilled;
     int whiteKilled;
-    
+
     public DraughtsGame(ServerThread firstPlayer, ServerThread secondPlayer)
     {
         super(firstPlayer, secondPlayer);
@@ -72,28 +72,65 @@ public class DraughtsGame extends Game
     }
 
     @Override
+    protected char reverseChar(char toRev)
+    {
+        if(toRev == 'b')
+            return 'w';
+        if(toRev =='w')
+            return 'b';
+
+        return 0;
+    }
+
+    @Override
     public void Move(ServerThread sender, Point from, Point to)
     {
         try
         {
-            if(from.x < 0 || from.x > State.getRows() || to.x < 0 || to.x > State.getRows()) 
+            if(from.x < 0 || from.x > State.getRows() || to.x < 0 || to.x > State.getRows())
                 throw new BadAttributeValueExpException("Pechalka;(");
-            
-            
-            
+
+
+
         } catch (BadAttributeValueExpException e)
         {
             SendStates();
         }
 
-        if(State.Board[to.x][to.y] == ' ' && State.getWhoWon() == ' ' && !(from.x < 0 || from.x > State.getRows() || to.x < 0 || to.x > State.getRows()))
-            if(sender.getMark() == State.getCurrentPlayer())
+        if(canMove(sender, from, to))
+        {
+            State.Board[from.x][from.y] = ' ';
+            State.Board[to.x][to.y] = sender.getMark();
+            if(Math.abs(to.x - from.x) == 2)
             {
-                State.Board[to.x][to.y] = sender.getMark();
-                CheckForWin(to);
-                State.setCurrentPlayer((State.getCurrentPlayer() == 'b')? 'w':'b');
+                if(State.Board[(from.x + to.x)/2][(from.y + to.y)/2] == 'w')
+                    whiteKilled++;
+                else
+                    blackKilled++;
+
+                State.Board[(from.x + to.x)/2][(from.y + to.y)/2] = ' ';
             }
 
+            State.setCurrentPlayer(reverseChar(State.getCurrentPlayer()));
+        }
+
         SendStates();
+    }
+
+    protected boolean canMove(ServerThread sender, Point from, Point to)
+    {
+        boolean result = false;
+
+        if(State.Board[to.x][to.y] == ' ' && State.getWhoWon() == ' '
+        && !(from.x < 0 || from.x > State.getRows() || to.x < 0 || to.x > State.getRows()) &&
+        sender.getMark() == State.getCurrentPlayer() && sender.getMark() ==  State.Board[from.x][from.y] &&
+        ((Math.abs(to.x - from.x) == 1 && Math.abs(to.y - from.y) == 1
+        || (Math.abs(to.x - from.x) == 2 && Math.abs(to.y - from.y) == 2 && State.Board[(from.x + to.x)/2][(from.y + to.y)/2] == reverseChar(sender.getMark())) )))
+        {
+            // добавить условие на обязательный бой (facepalm)
+            result = true;
+        }
+
+        return result;
     }
 }
