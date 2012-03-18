@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 public class MainServer {
 	private static int DEFAULT_PORT = 3224;
@@ -13,7 +12,6 @@ public class MainServer {
 
 	private InetAddress ipAddress;
 	private int port;
-	private ArrayList<ServerThread> serverThreads;
 	private ServerSocket mServerSocket;
 	private ServerMediator mediator;
 
@@ -21,15 +19,14 @@ public class MainServer {
 		this.ipAddress = ipAddress;
 		this.port = port;
 		mediator = new ServerMediator();
-		serverThreads = new ArrayList<ServerThread>();
 		try {
 			mServerSocket = new ServerSocket(port, 0, ipAddress);
 			System.out
-					.println(Messages.getString("MainServer.0") + ipAddress + ":" + port); //$NON-NLS-1$ //$NON-NLS-2$
+					.println(Messages.getString("MainServer.0") + this.ipAddress + ":" + this.port); //$NON-NLS-1$ //$NON-NLS-2$
 			while (true) {
 				Socket nSocket = mServerSocket.accept();
 				System.out.println(Messages.getString("MainServer.2")); //$NON-NLS-1$
-				// serverThreads.add(new ServerThread(this, nSocket));
+				mediator.getServerThreads().add(new ServerThread(mediator));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
