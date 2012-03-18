@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class MainServer {
 	private static int DEFAULT_PORT = 3224;
+	private static String DEFAULT_IP="127.0.0.1";
 
 	private InetAddress ipAddress;
 	private int port;
@@ -22,7 +23,7 @@ public class MainServer {
 		serverThreads = new ArrayList<ServerThread>();
 		try {
 			mServerSocket = new ServerSocket(port, 0, ipAddress);
-			System.out.println(Messages.getString("MainServer.0")+ipAddress+Messages.getString("MainServer.1")+port); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out.println(Messages.getString("MainServer.0")+ipAddress+":"+port); //$NON-NLS-1$ //$NON-NLS-2$
 			while(true)
             {
                 Socket nSocket = mServerSocket.accept();
@@ -38,8 +39,8 @@ public class MainServer {
 	}
 
 	public static void main(String[] args) {
-		int port = 3224;
-		String ip = Messages.getString("MainServer.3"); //$NON-NLS-1$
+		int port = DEFAULT_PORT;
+		String ip = DEFAULT_IP;
 		if (args.length>1) {
 			port = Integer.parseInt(args[1]);
 			ip = args[0];
