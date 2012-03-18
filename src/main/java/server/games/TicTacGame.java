@@ -35,7 +35,7 @@ public class TicTacGame extends Game
         }
 
         tCord.x = moveCord.x + 1;
-        while(tCord.getX() < State.Rows && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
+        while(tCord.getX() < State.getRows() && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
         {
             count++;
             tCord.x++;
@@ -57,7 +57,7 @@ public class TicTacGame extends Game
         }
 
         tCord.y = moveCord.y + 1;
-        while(tCord.getY() < State.Columns && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
+        while(tCord.getY() < State.getColumns() && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
         {
             count++;
             tCord.y++;
@@ -73,7 +73,7 @@ public class TicTacGame extends Game
         tCord.y = moveCord.y;
         tCord.x = moveCord.x;
 
-        while(tCord.getX() >=0 && tCord.getY() >=0 && tCord.getX() < State.Rows && tCord.getY() < State.Columns && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
+        while(tCord.getX() >=0 && tCord.getY() >=0 && tCord.getX() < State.getRows() && tCord.getY() < State.getColumns() && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
         {
             count++;
             tCord.y--;
@@ -82,7 +82,7 @@ public class TicTacGame extends Game
 
         tCord.y = moveCord.y + 1;
         tCord.x = moveCord.x + 1;
-        while(tCord.getX() < State.Rows && tCord.getY() < State.Columns && tCord.getX() >=0 && tCord.getY() >=0 && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
+        while(tCord.getX() < State.getRows() && tCord.getY() < State.getColumns() && tCord.getX() >=0 && tCord.getY() >=0 && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
         {
             count++;
             tCord.y++;
@@ -99,7 +99,7 @@ public class TicTacGame extends Game
         tCord.y = moveCord.y;
         tCord.x = moveCord.x;
 
-        while(tCord.getX() >=0 && tCord.getY() >=0 && tCord.getX() < State.Rows && tCord.getY() < State.Columns && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
+        while(tCord.getX() >=0 && tCord.getY() >=0 && tCord.getX() < State.getRows() && tCord.getY() < State.getColumns() && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
         {
             count++;
             tCord.y--;
@@ -108,7 +108,7 @@ public class TicTacGame extends Game
 
         tCord.y = moveCord.y + 1;
         tCord.x = moveCord.x - 1;
-        while(tCord.getX() < State.Rows && tCord.getY() < State.Columns && tCord.getX() >=0 && tCord.getY() >=0 && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
+        while(tCord.getX() < State.getRows() && tCord.getY() < State.getColumns() && tCord.getX() >=0 && tCord.getY() >=0 && State.Board[tCord.x][tCord.y] == State.getCurrentPlayer())
         {
             count++;
             tCord.y++;
@@ -121,7 +121,7 @@ public class TicTacGame extends Game
             return;
         }
 
-        if(MovesCount == State.Rows*State.Columns)
+        if(MovesCount == State.getRows()*State.getColumns())
         {
             State.WhoWon = 'd';
         }
@@ -130,9 +130,9 @@ public class TicTacGame extends Game
 
     protected void start()
     {
-        State = new GameState();
+        State = new GameState(3,3);
         char cp;
-        if(Math.random()*2 == 1)
+        if(((int) Math.random()*2) == 1)
         {
             cp = 'x';
             firstPlayer.setMark(cp);
