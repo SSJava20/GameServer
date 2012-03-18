@@ -11,6 +11,10 @@ public abstract class Game
     protected ServerThread secondPlayer;
     protected GameState State;
 
+    protected abstract void CheckForWin(Point moveCord);
+    protected abstract void start();
+    public abstract void Move(ServerThread sender, Point coords);
+
     public GameState getState()
     {
         return State;
@@ -40,30 +44,11 @@ public abstract class Game
         return 0;
     }
 
-    public void Move(ServerThread sender, Point coords)
-    {
-        if(State.Board[coords.x][coords.y] == ' ' && State.getWhoWon() == ' ')
-            if(sender.getMark() == State.getCurrentPlayer())
-            {
-                State.Board[coords.x][coords.y] = sender.getMark();
-                MovesCount++;
-                CheckForWin(coords);
-                State.setCurrentPlayer(reverseChar(State.getCurrentPlayer()));
-            }
-
-        SendStates();
-    }
-
-
-    protected abstract void CheckForWin(Point moveCord);
-
     protected void SendStates()
     {
         firstPlayer.sendGameState(State);
         secondPlayer.sendGameState(State);
     }
-
-    protected abstract void start();
 
     public void Surrender(ServerThread sender)
     {
