@@ -8,11 +8,13 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class MainServer {
+	private static int DEFAULT_PORT = 3224;
 
 	private InetAddress ipAddress;
 	private int port;
 	private ArrayList<ServerThread> serverThreads;
 	private ServerSocket mServerSocket;
+	private ServerMediator mediator;
 
 	public MainServer(InetAddress ipAddress, int port) throws IOException {
 		this.ipAddress = ipAddress;
@@ -20,11 +22,11 @@ public class MainServer {
 		serverThreads = new ArrayList<ServerThread>();
 		try {
 			mServerSocket = new ServerSocket(port, 0, ipAddress);
-			System.out.println("<INFO> Server started at "+ipAddress+":"+port);
+			System.out.println(Messages.getString("MainServer.0")+ipAddress+Messages.getString("MainServer.1")+port); //$NON-NLS-1$ //$NON-NLS-2$
 			while(true)
             {
                 Socket nSocket = mServerSocket.accept();
-                System.out.println("<INFO> New client connected");
+                System.out.println(Messages.getString("MainServer.2")); //$NON-NLS-1$
                 //serverThreads.add(new ServerThread(this, nSocket));
             }
 		} catch (IOException e) {
@@ -36,8 +38,14 @@ public class MainServer {
 	}
 
 	public static void main(String[] args) {
+		int port = 3224;
+		String ip = Messages.getString("MainServer.3"); //$NON-NLS-1$
+		if (args.length>1) {
+			port = Integer.parseInt(args[1]);
+			ip = args[0];
+		}
 		try {
-			new MainServer(InetAddress.getByName("127.0.0.1"), 3224);
+			new MainServer(InetAddress.getByName(ip), port);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
