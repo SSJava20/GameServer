@@ -25,7 +25,7 @@ public class MainServer {
 					.println(Messages.getString("MainServer.0") + this.ipAddress + ":" + this.port); //$NON-NLS-1$ //$NON-NLS-2$
 			while (true) {
 				Socket nSocket = mServerSocket.accept();
-				System.out.println(Messages.getString("MainServer.2")); //$NON-NLS-1$
+				System.out.println(Messages.getString("MainServer.2")); 
 				mediator.getServerThreads().add(new ServerThread(mediator));
 			}
 		} catch (IOException e) {
